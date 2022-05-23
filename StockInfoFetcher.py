@@ -50,7 +50,7 @@ def yahoo_financial_statements(ticker):
         def convert_to_numeric(column):
             first_col = [i.replace(',','') for i in column]
             second_col = [i.replace('-','') for i in first_col]
-            final_col = ['{:,.2f}'.format(x) for x in second_col/10000000]
+            final_col = ['{:,.2f}'.format((0 if x == '' else float(x))/10000000) for x in second_col]
             return final_col
         for column in headers[1:]:
             df[column] = convert_to_numeric(df[column])
@@ -130,6 +130,7 @@ def writeStockStatement():
         exchange_cell = my_sheet_obj.cell(row = i, column = 2)
         symbol_cell = my_sheet_obj.cell(row = i, column = 3)
         ticker = str(symbol_cell.value)+"."+("NS" if exchange_cell.value == "NSE" else "BO")
+        print(ticker)
         financials = yahoo_financial_statements(ticker)
         income_statement = financials[0]
         balance_sheet = financials[1]
@@ -148,9 +149,9 @@ def writeStockStatement():
 from datetime import datetime
 today = datetime.now()
 #writeStockInfo()
-#writeStockStatement()
-if today.day == 1:
+writeStockStatement()
+#if today.day == 1:
     #writeStockInfo()
-    writeStockStatement()
-else:
-    writeStockInfo()
+#    writeStockStatement()
+#else:
+#    writeStockInfo()
