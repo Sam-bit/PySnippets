@@ -23,7 +23,7 @@ class FacebookLogin():
         # Store credentials for login
         self.email = email
         self.password = password
-        self.driver = webdriver.Chrome(executable_path=CHROME_DVR_DIR,options = options)
+        self.driver = webdriver.Chrome(service=Service(CHROME_DVR_DIR),options = options)
         self.driver.get(LOGIN_URL)
         time.sleep(1) # Wait for some time to load      
     def login(self):
