@@ -1,5 +1,5 @@
 import cv2,time
-vidcap = cv2.VideoCapture("D:\SmartVideoRecorder\DEFAULT_20220408_151729.mp4")
+vidcap = cv2.VideoCapture("D:\File.mp4")
 success,image = vidcap.read()
 count = 0
 secs_gap =1

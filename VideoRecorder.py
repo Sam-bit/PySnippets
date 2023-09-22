@@ -10,7 +10,7 @@ import os
 from signal import *
 class VideoRecorder():  
     "Video class based on openCV"
-    def __init__(self, name="temp_video.avi", fourcc="MJPG", sizex=640, sizey=480, camindex=0, fps=30):
+    def __init__(self, name="temp_video.avi", fourcc="MJPG", sizex=640, sizey=480, camindex=0, fps=24):
         self.open = True
         self.device_index = camindex
         self.fps = fps                  # fps should be the minimum constant rate at which the camera can
@@ -165,6 +165,5 @@ def file_manager(filename="test"):
 
 if __name__ == '__main__':
     start_AVrecording()
-    for sig in (SIGBREAK, SIGABRT, SIGINT, SIGTERM):
-        signal(sig, stop_AVrecording)
-    
+    time.sleep(10)
+    stop_AVrecording()
