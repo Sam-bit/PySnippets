@@ -15,21 +15,21 @@ def getSoup(mf_url):
 
 def get_current_nav(soup):
     try:
-        cur_nav = float(sub(r'[^0-9.]', '', soup.find('td', class_= "fd12Cell clrText130 fs16 fw500").text.strip()))
+        cur_nav = float(sub(r'[^0-9.]', '', soup.find('td', class_= "fd12Cell contentPrimary bodyLargeHeavy").text.strip()))
     except:
         cur_nav = "N/A"
     return cur_nav
 
 def get_expense_ratio(soup):
     try:
-        exp_ratio = soup.find('h3', class_= "fs16 fw500 ot654subHeading").text.strip().replace("Expense ratio: ","")
+        exp_ratio = soup.find('h3', class_= "ot654subHeading bodyLargeHeavy").text.strip().replace("Expense ratio: ","")
     except:
         exp_ratio = "N/A"
     return exp_ratio
 xlfilename = "C:\\Users\\LENOVO\\Desktop\\MY PORTFOLIO.xlsx"
 my_wb = openpyxl.load_workbook(xlfilename)
-my_sheet_obj = my_wb['ALL INVESTMENT']
-for i in range(16, 20):
+my_sheet_obj = my_wb['ALL INVESTMENTS']
+for i in range(16, 21):
     mf_url = my_sheet_obj.cell(row=i, column=6)
     print(str(mf_url.value).strip())
     soup = getSoup(str(mf_url.value).strip())

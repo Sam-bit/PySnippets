@@ -32,9 +32,14 @@ def get_ex_dividend_amt_yield(soup):
 
 
 def get_current_price(symbol):
-    ticker = yf.Ticker(symbol)
-    todays_data = ticker.history(period='1d')
-    return todays_data['Close'][0]
+    cprice = 0
+    try:
+        ticker = yf.Ticker(symbol)
+        todays_data = ticker.history(period='1d')
+        cprice = todays_data['Close'].iloc[-1]
+    except:
+        cprice = 0
+    return cprice
 
 
 def get_52weekshigh_price(symbol):
@@ -58,7 +63,8 @@ def get_fromjan2020low_price(symbol):
 
 
 def get_market_cap(symbol):
-    market_cap_data = int(web.get_quote_yahoo(symbol)['marketCap'])
+    market_cap_data = int(yf.Ticker(symbol).info['marketCap'])
+    #market_cap_data = int(web.get_quote_yahoo(symbol)['marketCap'])
     return market_cap_data
 
 
