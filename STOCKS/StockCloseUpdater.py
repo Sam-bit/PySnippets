@@ -37,18 +37,19 @@ def get_current_price(symbol):
         todays_data = ticker.history(period='1d')
         cprice = todays_data['Close'].iloc[-1]
     except:
-        cprice =0
+        print(yf.Ticker(symbol).info.keys())
+        cprice  = yf.Ticker(symbol).info['currentPrice']
     return cprice
 
 
 def get_52weekshigh_price(symbol):
-    dataframe = yf.download(symbol, period="1y", auto_adjust=True, prepost=True, threads=True)
-    return dataframe['High'].max()
+    return yf.Ticker(symbol).info['fiftyTwoWeekHigh']
 
 
 def get_52weekslow_price(symbol):
-    dataframe = yf.download(symbol, period="1y", auto_adjust=True, prepost=True, threads=True)
-    return dataframe['High'].min()
+    #dataframe = yf.download(symbol, period="1y", auto_adjust=True, prepost=True, threads=True)
+    #return dataframe['High'].min()
+    return yf.Ticker(symbol).info['fiftyTwoWeekLow']
 
 
 def get_fromjan2020high_price(symbol):
