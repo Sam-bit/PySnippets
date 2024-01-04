@@ -30,26 +30,31 @@ def get_ex_dividend_amt_yield(soup):
         exdivamt = "N/A (N/A)"
     return exdivamt
 
+def get_ex_dividend_amt(symbol):
+    try:
+        exdivamt = yf.Ticker(symbol).info['lastDividendValue']
+    except:
+        exdivamt = 0
+    return exdivamt
 
 def get_current_price(symbol):
-    cprice = 0
     try:
         ticker = yf.Ticker(symbol)
         todays_data = ticker.history(period='1d')
         cprice = todays_data['Close'].iloc[-1]
     except:
-        cprice = 0
+        cprice  = yf.Ticker(symbol).info['currentPrice']
     return cprice
 
 
 def get_52weekshigh_price(symbol):
-    dataframe = yf.download(symbol, period="1y", auto_adjust=True, prepost=True, threads=True)
-    return dataframe['High'].max()
+    return yf.Ticker(symbol).info['fiftyTwoWeekHigh']
 
 
 def get_52weekslow_price(symbol):
-    dataframe = yf.download(symbol, period="1y", auto_adjust=True, prepost=True, threads=True)
-    return dataframe['High'].min()
+    #dataframe = yf.download(symbol, period="1y", auto_adjust=True, prepost=True, threads=True)
+    #return dataframe['High'].min()
+    return yf.Ticker(symbol).info['fiftyTwoWeekLow']
 
 
 def get_fromjan2020high_price(symbol):
@@ -58,13 +63,16 @@ def get_fromjan2020high_price(symbol):
 
 
 def get_fromjan2020low_price(symbol):
-    dataframe = yf.download(symbol, period="1y", auto_adjust=True, prepost=True, threads=True)
+    dataframe = yf.download(symbol, start='2020-01-01', auto_adjust=True, prepost=True, threads=True)
     return dataframe['High'].min()
 
 
 def get_market_cap(symbol):
-    market_cap_data = int(yf.Ticker(symbol).info['marketCap'])
-    #market_cap_data = int(web.get_quote_yahoo(symbol)['marketCap'])
+    try:
+        market_cap_data = int(yf.Ticker(symbol).info['marketCap'])
+        # market_cap_data = int(web.get_quote_yahoo(symbol)['marketCap'])
+    except:
+        return 0
     return market_cap_data
 
 
@@ -82,7 +90,7 @@ for i in range(2, my_row + 1):
     fromjan2020low_price = get_fromjan2020low_price(str(symbol_cell.value) + ".NS")
     market_cap_data = get_market_cap(str(symbol_cell.value) + ".NS")
     ex_dividend_date = get_ex_dividend_date(soup)
-    ex_dividend_amt_yield = get_ex_dividend_amt_yield(soup)
+    ex_dividend_amt_yield = get_ex_dividend_amt(soup)
     print(ex_dividend_date)
     print(ex_dividend_amt_yield)
     print("{} : {}".format(str(symbol_cell.value), round(closing_balance, 2)))
