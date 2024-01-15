@@ -1,6 +1,8 @@
 #import os, sys
 # os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # sys.path.insert(1, os.path.join(sys.path[0], '..'))
+import time
+import webbrowser
 
 import requests
 import pandas as pd
@@ -9,19 +11,20 @@ import datetime
 import logging
 import re
 
-mode = 'local'
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
-if mode == 'local':
-    def nsefetch(payload):
-        output = requests.get(payload, headers=headers).json()
-        return output
+from selenium.webdriver.support.wait import WebDriverWait
+
+def nsefetch(payload,failoverurl):
+   output = requests.get(payload, headers=headers).json()
 
 headers = {
     'Connection': 'keep-alive',
     'Cache-Control': 'max-age=0',
     'DNT': '1',
     'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     'Sec-Fetch-User': '?1',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'Sec-Fetch-Site': 'none',

@@ -273,3 +273,6 @@ yfinance==0.2.33
 youtube-dl==2021.12.17
 yt-dlp==2023.12.30
 zope.interface==6.1
+
+XlsxWriter~=3.1.9
+qrcode~=7.4.2
