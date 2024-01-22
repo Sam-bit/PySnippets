@@ -1,5 +1,6 @@
 import os,time,glob
 from datetime import datetime
+from itertools import takewhile, dropwhile
 
 import instaloader
 
@@ -30,10 +31,20 @@ captionToCheck = [
     'sherlyn',
     'malla',
     'giorgia',
-    'GA'
+    'GA',
+    'malaika',
+    'bhumi',
+    'neha',
+    'NS',
+    'poonam',
+    'PP',
+    'Guess',
+    'nia',
+    'NS'
 ]
 L = instaloader.Instaloader()
-
+UNTIL = datetime(2024,1,1)
+#SINCE = datetime(2024,1,11)
 for id in range(len(profiles)):
     L.load_session_from_file("shyam_it9193")
     profile_name = profiles[id]
@@ -41,14 +52,20 @@ for id in range(len(profiles)):
     #profile_dir = os.path.join(download_dir,profile_name)
     profile_dir  = profile_name
     profile = instaloader.Profile.from_username(L.context,profile_name)
+    id = 1
     for post in profile.get_posts():
         print(post.date)
-        if post.date >= datetime(2023,12,1):
+
+        if post.date < UNTIL and id <4:
+            id+=1
+            continue
+        elif post.date >= UNTIL:
             caption = post.caption
             if caption is not None:
                 if any(cap.lower() in caption.lower() for cap in captionToCheck):
                     print(post.shortcode)
                     L.download_post(post,profile_dir)
+                    id+=1
         else:
             break
     L.save_session()
