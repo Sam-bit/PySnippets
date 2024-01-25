@@ -36,12 +36,13 @@ def get_ex_dividend_amt(symbol):
         exdivamt = 0
     return exdivamt
 def get_current_price(symbol):
-    try:
-        ticker = yf.Ticker(symbol)
-        todays_data = ticker.history(period='1d')
-        cprice = todays_data['Close'].iloc[-1]
-    except:
-        cprice  = yf.Ticker(symbol).info['currentPrice']
+    cprice = yf.Ticker (symbol).info['currentPrice']
+    # try:
+    #     ticker = yf.Ticker(symbol)
+    #     todays_data = ticker.history(period='1d')
+    #     cprice = todays_data['Close'].iloc[-1]
+    # except:
+    #     cprice  = yf.Ticker(symbol).info['currentPrice']
     return cprice
 
 

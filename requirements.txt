@@ -31,7 +31,7 @@ colorama==0.4.6
 comm==0.2.1
 constantly==23.10.4
 contourpy==1.2.0
-cryptography==41.0.7
+cryptography==42.0.1
 cssselect==1.2.0
 cycler==0.12.1
 debugpy==1.8.0
@@ -59,8 +59,9 @@ fonttools==4.47.2
 fqdn==1.5.1
 frozendict==2.4.0
 gast==0.5.4
+glyphoji==0.3.1
 google==3.0.0
-google-auth==2.26.2
+google-auth==2.27.0
 google-auth-oauthlib==1.2.0
 google-pasta==0.2.0
 google-search==1.1.1
@@ -94,7 +95,7 @@ jupyter-lsp==2.2.2
 jupyter_client==8.6.0
 jupyter_core==5.7.1
 jupyter_server==2.12.5
-jupyter_server_terminals==0.5.1
+jupyter_server_terminals==0.5.2
 jupyterlab==4.0.11
 jupyterlab_pygments==0.3.0
 jupyterlab_server==2.25.2
@@ -102,6 +103,7 @@ keras==2.15.0
 kiwisolver==1.4.5
 langdetect==1.0.9
 libclang==16.0.6
+likee-downloader==1.8.1
 lockfile==0.12.2
 luigi==3.5.0
 lxml==5.1.0
@@ -150,7 +152,7 @@ pickleshare==0.7.5
 pillow==10.2.0
 pipreqs==0.4.13
 platformdirs==4.1.0
-pluggy==1.3.0
+pluggy==1.4.0
 prometheus-client==0.19.0
 prompt-toolkit==3.0.43
 Protego==0.3.0
@@ -170,7 +172,7 @@ Pygments==2.17.2
 pygrametl==2.8
 PyMsgBox==1.0.9
 pynose==1.4.8
-pyOpenSSL==23.3.0
+pyOpenSSL==24.0.0
 pyotp==2.9.0
 pyparsing==3.1.1
 pyperclip==1.8.2
@@ -218,9 +220,9 @@ schedule==1.2.1
 scikit-learn==1.4.0
 scipy==1.12.0
 Scrapy==2.11.0
-seaborn==0.13.1
-selenium==4.16.0
-seleniumbase==4.22.6
+seaborn==0.13.2
+selenium==4.17.2
+seleniumbase==4.23.0
 Send2Trash==1.8.2
 service-identity==24.1.0
 six==1.16.0
