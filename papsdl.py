@@ -9,23 +9,23 @@ from codecutils import decodestring
 download_dir = "E:\\FlutterProjects\\qr_gif_codec\\example\\android\\app\\src\\main\\res\\values\\INSTA"
 os.chdir (download_dir)
 from subprocess import call
-
-localappdata = os.getenv ("LOCALAPPDATA")
-folderpath = os.path.join (localappdata , "Instaloader")
-profiles = [#'filmygyan' ,
-           # 'bollywoodsocietyy' ,
-           #  'viralbhayani' ,
-           #  'bollywoodbubble' ,
-            'instantbollywood' ,
-            'filmymantramedia' ,
-            'bollywoodirect' ,
-            'voompla' ,
-            'manav.manglani'
-            ]
+fastUpdate = True
+profiles = [
+    # 'filmygyan' ,
+    # 'bollywoodsocietyy' ,
+    # 'viralbhayani' ,
+    'bollywoodbubble' ,
+    'instantbollywood' ,
+    # 'filmymantramedia' ,
+    # 'bollywoodirect' ,
+    # 'voompla' ,
+    # 'manav.manglani'
+]
 captionToCheck = [
     'nora' ,
     'disha' ,
     'mouni' ,
+    'alaya'
     'sherlyn' ,
     'malla' ,
     'giorgia' ,
@@ -36,9 +36,12 @@ captionToCheck = [
     'Guess' ,
     'nia' ,
     'vacation',
-    'vacay'
+    'vacay',
+    'hot',
+    'sexy',
+    'sobhita'
 ]
-shortCaptionToCheck = [\
+shortCaptionToCheck = [
     'NF' ,
     'DP' ,
     'MR' ,
@@ -49,7 +52,10 @@ shortCaptionToCheck = [\
     'NS'
 ]
 L = instaloader.Instaloader ()
-UNTIL = datetime (2024 , 1 , 1)
+if fastUpdate:
+    UNTIL= datetime(2024,1,26)
+else:
+    UNTIL = datetime (2024 , 1 , 1)
 # SINCE = datetime(2024,1,11)
 for id in range (len (profiles)):
     L.load_session_from_file ("shyam_it9193")

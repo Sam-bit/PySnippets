@@ -38,12 +38,12 @@ def get_ex_dividend_amt(symbol):
     return exdivamt
 
 def get_current_price(symbol):
-    try:
-        ticker = yf.Ticker(symbol)
-        todays_data = ticker.history(period='1d')
-        cprice = todays_data['Close'].iloc[-1]
-    except:
-        cprice  = yf.Ticker(symbol).info['currentPrice']
+    cprice = yf.Ticker (symbol).info['currentPrice']
+    # try:
+    #     ticker = yf.Ticker(symbol)
+    #     todays_data = ticker.history(period='1d')
+    #     cprice = todays_data['Close'].iloc[-1]
+    # except:
     return cprice
 
 
@@ -57,14 +57,14 @@ def get_52weekslow_price(symbol):
     return yf.Ticker(symbol).info['fiftyTwoWeekLow']
 
 
-def get_fromjan2020high_price(symbol):
-    dataframe = yf.download(symbol, start='2020-01-01', auto_adjust=True, prepost=True, threads=True)
-    return dataframe['High'].max()
-
-
-def get_fromjan2020low_price(symbol):
-    dataframe = yf.download(symbol, start='2020-01-01', auto_adjust=True, prepost=True, threads=True)
-    return dataframe['High'].min()
+# def get_fromjan2020high_price(symbol):
+#     dataframe = yf.download(symbol, start='2020-01-01', auto_adjust=True, prepost=True, threads=True)
+#     return dataframe['High'].max()
+#
+#
+# def get_fromjan2020low_price(symbol):
+#     dataframe = yf.download(symbol, start='2020-01-01', auto_adjust=True, prepost=True, threads=True)
+#     return dataframe['High'].min()
 
 
 def get_market_cap(symbol):
@@ -86,8 +86,8 @@ for i in range(2, my_row + 1):
     soup = getSoup(str(symbol_cell.value) + ".NS")
     oneyearhigh_price = get_52weekshigh_price(str(symbol_cell.value) + ".NS")
     oneyearlow_price = get_52weekslow_price(str(symbol_cell.value) + ".NS")
-    fromjan2020high_price = get_fromjan2020high_price(str(symbol_cell.value) + ".NS")
-    fromjan2020low_price = get_fromjan2020low_price(str(symbol_cell.value) + ".NS")
+    # fromjan2020high_price = get_fromjan2020high_price(str(symbol_cell.value) + ".NS")
+    # fromjan2020low_price = get_fromjan2020low_price(str(symbol_cell.value) + ".NS")
     market_cap_data = get_market_cap(str(symbol_cell.value) + ".NS")
     ex_dividend_date = get_ex_dividend_date(soup)
     ex_dividend_amt_yield = get_ex_dividend_amt(soup)
@@ -97,8 +97,8 @@ for i in range(2, my_row + 1):
     my_sheet_obj.cell(row=i, column=7).value = round(closing_balance, 2)
     my_sheet_obj.cell(row=i, column=5).value = round(oneyearhigh_price, 2)
     my_sheet_obj.cell(row=i, column=6).value = round(oneyearlow_price, 2)
-    my_sheet_obj.cell(row=i, column=11).value = round(fromjan2020high_price, 2)
-    my_sheet_obj.cell(row=i, column=12).value = round(fromjan2020low_price, 2)
+    # my_sheet_obj.cell(row=i, column=11).value = round(fromjan2020high_price, 2)
+    # my_sheet_obj.cell(row=i, column=12).value = round(fromjan2020low_price, 2)
     my_sheet_obj.cell(row=i, column=16).value = ex_dividend_date
     my_sheet_obj.cell(row=i, column=17).value = ex_dividend_amt_yield
     # Large-cap companies have a market cap of Rs 20,000 crore or more.

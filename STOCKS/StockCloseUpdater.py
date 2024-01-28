@@ -36,7 +36,9 @@ def get_ex_dividend_amt(symbol):
         exdivamt = 0
     return exdivamt
 def get_current_price(symbol):
-    cprice = yf.Ticker (symbol).info['currentPrice']
+    cprice = 0
+    if symbol != "":
+        cprice = yf.Ticker (symbol).info['currentPrice']
     # try:
     #     ticker = yf.Ticker(symbol)
     #     todays_data = ticker.history(period='1d')
@@ -86,7 +88,7 @@ for i in range(2,my_row+1):
     symbol = str(symbol_cell.value) + "." + ("NS" if exchange_cell.value == "NSE" else "BO")
     if num_shares != 0:
         soup = getSoup(str(symbol_cell.value).strip() + ".NS")
-        closing_balance = get_current_price(symbol)
+        closing_balance = get_current_price(symbol if symbol_cell.value != "GOLDBEES" else "")
         market_cap_data = get_market_cap(str(symbol_cell.value) + ".NS") if symbol_cell.value != "GOLDBEES" else 0
         oneyearhigh_price = get_52weekshigh_price(symbol)
         oneyearlow_price = get_52weekslow_price(symbol)
