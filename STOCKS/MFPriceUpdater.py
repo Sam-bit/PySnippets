@@ -29,8 +29,8 @@ def get_expense_ratio(soup):
 xlfilename = "C:\\Users\\LENOVO\\Desktop\\MY PORTFOLIO.xlsx"
 my_wb = openpyxl.load_workbook(xlfilename)
 my_sheet_obj = my_wb['ALL INVESTMENTS']
-for i in range(16, 21):
-    mf_url = my_sheet_obj.cell(row=i, column=6)
+for i in range(19, 24):
+    mf_url = my_sheet_obj.cell(row=i, column=7)
     print(str(mf_url.value).strip())
     soup = getSoup(str(mf_url.value).strip())
     current_nav = get_current_nav(soup)

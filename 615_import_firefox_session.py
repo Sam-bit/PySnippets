@@ -1,3 +1,5 @@
+import os
+import time
 from argparse import ArgumentParser
 from glob import glob
 from os.path import expanduser
@@ -47,7 +49,10 @@ if __name__ == "__main__":
     p.add_argument("-c", "--cookiefile")
     p.add_argument("-f", "--sessionfile")
     args = p.parse_args()
+    # os.system ('firefox.exe -new-tab https://www.instagram.com/');
+    # time.sleep (30)
     try:
         import_session(args.cookiefile or get_cookiefile(), args.sessionfile)
     except (ConnectionException, OperationalError) as e:
         raise SystemExit("Cookie import failed: {}".format(e))
+    # os.system ("taskkill /im firefox.exe /f")

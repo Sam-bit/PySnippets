@@ -11,15 +11,15 @@ os.chdir (download_dir)
 from subprocess import call
 fastUpdate = True
 profiles = [
-    # 'filmygyan' ,
-    # 'bollywoodsocietyy' ,
-    # 'viralbhayani' ,
+    'filmygyan' ,
+    'bollywoodsocietyy' ,
+    'viralbhayani' ,
     'bollywoodbubble' ,
     'instantbollywood' ,
-    # 'filmymantramedia' ,
-    # 'bollywoodirect' ,
-    # 'voompla' ,
-    # 'manav.manglani'
+    'filmymantramedia' ,
+    'bollywoodirect' ,
+    'voompla' ,
+    'manav.manglani'
 ]
 captionToCheck = [
     'nora' ,
@@ -39,7 +39,12 @@ captionToCheck = [
     'vacay',
     'hot',
     'sexy',
-    'sobhita'
+    'sobhita',
+    'avneet',
+    'mrunal',
+    'tripti',
+    'raashi',
+    'rashi'
 ]
 shortCaptionToCheck = [
     'NF' ,
@@ -49,16 +54,19 @@ shortCaptionToCheck = [
     'GA' ,
     'NS' ,
     'PP' ,
-    'NS'
+    'NS',
+    'AK',
+    'MT'
 ]
-L = instaloader.Instaloader ()
+L = instaloader.Instaloader (request_timeout=86400,user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0")
 if fastUpdate:
-    UNTIL= datetime(2024,1,26)
+    UNTIL= datetime(2024,1,30)
 else:
     UNTIL = datetime (2024 , 1 , 1)
 # SINCE = datetime(2024,1,11)
 for id in range (len (profiles)):
     L.load_session_from_file ("shyam_it9193")
+
     profile_name = profiles[id]
     print ("Scrapping {}".format (profile_name))
     # profile_dir = os.path.join(download_dir,profile_name)
