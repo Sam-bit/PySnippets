@@ -44,7 +44,12 @@ captionToCheck = [
     'mrunal',
     'tripti',
     'raashi',
-    'rashi'
+    'rashi',
+    'sharma',
+    'slay',
+    'aisha',
+    'temp',
+
 ]
 shortCaptionToCheck = [
     'NF' ,
@@ -60,7 +65,7 @@ shortCaptionToCheck = [
 ]
 L = instaloader.Instaloader (request_timeout=86400,user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0")
 if fastUpdate:
-    UNTIL= datetime(2024,1,30)
+    UNTIL= datetime(2024,2,2)
 else:
     UNTIL = datetime (2024 , 1 , 1)
 # SINCE = datetime(2024,1,11)
