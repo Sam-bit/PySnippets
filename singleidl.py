@@ -8,5 +8,11 @@ timeout = 86400
 localappdata = os.getenv ("LOCALAPPDATA")
 folderpath = os.path.join (localappdata , "Instaloader")
 call (
-    "instaloader priyankayadav026 --login=shyam_it9193 --fast-update --stories --request-timeout={} --user-agent=\"{}\"".format (
+    "instaloader soniyaofficial123 --login=shyam_it9193 --stories --request-timeout={} --user-agent=\"{}\"".format (
         timeout , useragent))
+#prece.kaiyokkrokthailand
+#kaiyokkrok.pattaya
+#bollywood__hungama_69
+#soniyaofficial123
+##giorgiaandriani
+#priyankayadav026

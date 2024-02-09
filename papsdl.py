@@ -19,7 +19,10 @@ profiles = [
     'filmymantramedia' ,
     'bollywoodirect' ,
     'voompla' ,
-    'manav.manglani'
+    'manav.manglani',
+    'pinkvilla',
+    'tellymasala',
+    'bolbollywood.in'
 ]
 captionToCheck = [
     'nora' ,
@@ -49,7 +52,13 @@ captionToCheck = [
     'slay',
     'aisha',
     'temp',
-
+    'game',
+    'soniya'
+    'manushi',
+    'tara',
+    'palak',
+    'sonam',
+    'girl'
 ]
 shortCaptionToCheck = [
     'NF' ,
@@ -61,11 +70,15 @@ shortCaptionToCheck = [
     'PP' ,
     'NS',
     'AK',
-    'MT'
+    'MT',
+    'TS',
+    'PT'
+    'AA',
+    'SB'
 ]
 L = instaloader.Instaloader (request_timeout=86400,user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0")
 if fastUpdate:
-    UNTIL= datetime(2024,2,2)
+    UNTIL= datetime(2024,2,4)
 else:
     UNTIL = datetime (2024 , 1 , 1)
 # SINCE = datetime(2024,1,11)
@@ -87,6 +100,7 @@ for id in range (len (profiles)):
         elif post.date >= UNTIL:
             caption = post.caption
             if caption is not None:
+                # print(caption)
                 if any (cap.lower() in caption.lower() for cap in captionToCheck) or any (cap in caption for cap in shortCaptionToCheck):
                     # print (post.shortcode)
                     L.download_post (post , profile_dir)
