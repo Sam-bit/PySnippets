@@ -1,29 +1,36 @@
+from datetime import datetime
+
 import yfinance as yf
 import openpyxl
 import pandas_datareader as web
 import requests
 from bs4 import BeautifulSoup
-
-
 def getSoup(symbol):
     headers = {
-        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+        'accept-encoding': None
     }
     url = "https://finance.yahoo.com/quote/" + symbol + "?p=" + symbol + "&.tsrc=fin-srch"
     html = requests.get(url, headers=headers).text
     soup = BeautifulSoup(html, 'html.parser')
     return soup
 
-
-def get_ex_dividend_date(soup):
+def get_ex_dividend_date_soup(soup):
     try:
         exdivdate = soup.find('td', {"data-test": "EX_DIVIDEND_DATE-value"}).text.strip()
     except:
         exdivdate = "--"
     return exdivdate
+def get_ex_dividend_date(symbol):
+    try:
+        exdivdate = yf.Ticker(symbol).info['lastDividendDate']
+        exdivdate=datetime.utcfromtimestamp(exdivdate).strftime("%d-%b-%Y")
+    except:
+        exdivdate = "--"
+    return exdivdate
 
 
-def get_ex_dividend_amt_yield(soup):
+def get_ex_dividend_amt_yield_soup(soup):
     try:
         exdivamt = soup.find('td', {"data-test": "DIVIDEND_AND_YIELD-value"}).text.strip()
     except:
@@ -66,6 +73,9 @@ def get_52weekslow_price(symbol):
 #     dataframe = yf.download(symbol, start='2020-01-01', auto_adjust=True, prepost=True, threads=True)
 #     return dataframe['High'].min()
 
+def get_ticker(symbol):
+    ticker = yf.Ticker(symbol)
+    return ticker
 
 def get_market_cap(symbol):
     try:
@@ -75,25 +85,23 @@ def get_market_cap(symbol):
         return 0
     return market_cap_data
 
-
-xlfilename = "C:\\Users\\LENOVO\\Desktop\\MY PORTFOLIO.xlsx"
+xlfilename = "C:\\Users\\LENOVO\\OneDrive\\Desktop\\MY PORTFOLIO.xlsx"
 my_wb = openpyxl.load_workbook(xlfilename)
 my_sheet_obj = my_wb['NEW WATCHLISTS']
 my_row = len([row for row in my_sheet_obj if not all([cell.value == None for cell in row])])
 for i in range(2, my_row + 1):
-    symbol_cell = my_sheet_obj.cell(row=i, column=1)
-    closing_balance = get_current_price(str(symbol_cell.value) + ".NS")
-    soup = getSoup(str(symbol_cell.value) + ".NS")
-    oneyearhigh_price = get_52weekshigh_price(str(symbol_cell.value) + ".NS")
-    oneyearlow_price = get_52weekslow_price(str(symbol_cell.value) + ".NS")
+    symbol = str(my_sheet_obj.cell(row=i, column=1).value) + ".NS"
+    symbol_ticker = get_ticker(symbol)
+    closing_balance = symbol_ticker.info.get('currentPrice',0)
+    market_cap_data = symbol_ticker.info.get('marketCap', 0)
+    oneyearhigh_price = symbol_ticker.info.get('fiftyTwoWeekHigh',0)
+    oneyearlow_price = symbol_ticker.info.get('fiftyTwoWeekLow',0)
     # fromjan2020high_price = get_fromjan2020high_price(str(symbol_cell.value) + ".NS")
     # fromjan2020low_price = get_fromjan2020low_price(str(symbol_cell.value) + ".NS")
-    market_cap_data = get_market_cap(str(symbol_cell.value) + ".NS")
-    ex_dividend_date = get_ex_dividend_date(soup)
-    ex_dividend_amt_yield = get_ex_dividend_amt(soup)
-    print(ex_dividend_date)
-    print(ex_dividend_amt_yield)
-    print("{} : {}".format(str(symbol_cell.value), round(closing_balance, 2)))
+    ex_dividend_date = get_ex_dividend_date(symbol_ticker)
+    ex_dividend_amt_yield = get_ex_dividend_amt(symbol_ticker)
+    print("{} : {}".format(str(symbol), round(closing_balance, 2)))
+    print("{} {}".format(str(ex_dividend_date), str(ex_dividend_amt_yield)))
     my_sheet_obj.cell(row=i, column=7).value = round(closing_balance, 2)
     my_sheet_obj.cell(row=i, column=5).value = round(oneyearhigh_price, 2)
     my_sheet_obj.cell(row=i, column=6).value = round(oneyearlow_price, 2)

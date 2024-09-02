@@ -1,3 +1,5 @@
+import datetime
+
 import yfinance as yf
 import openpyxl
 import requests
@@ -6,10 +8,11 @@ from bs4 import BeautifulSoup
 
 def getSoup(symbol):
     headers = {
-        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+        'accept-encoding': None
     }
-    url = "https://finance.yahoo.com/quote/" + symbol + "?p=" + symbol + "&.tsrc=fin-srch"
-    html = requests.get(url, headers=headers).text
+    url = "https://finance.yahoo.com/quote/" + symbol + "?.tsrc=fin-srch"
+    html = requests.get(url, headers=headers,).text
     soup = BeautifulSoup(html, 'html.parser')
     return soup
 
@@ -28,17 +31,27 @@ def get_ex_dividend_amt_yield_soup(soup):
     except:
         exdivamt = "N/A (N/A)"
     return exdivamt
-
-def get_ex_dividend_amt(symbol):
+def get_ex_dividend_date(symbol_ticker):
     try:
-        exdivamt = yf.Ticker(symbol).info['lastDividendValue']
+        exdivdate = symbol_ticker.info['lastDividendDate']
+        exdivdate=datetime.datetime.utcfromtimestamp(exdivdate).strftime("%d-%b-%Y")
+    except:
+        exdivdate = "--"
+    return exdivdate
+
+def get_ex_dividend_amt(symbol_ticker):
+    try:
+        exdivamt = symbol_ticker.info['lastDividendValue']
     except:
         exdivamt = 0
     return exdivamt
 def get_current_price(symbol):
     cprice = 0
-    if symbol != "":
-        cprice = yf.Ticker (symbol).info['currentPrice']
+    try:
+        if symbol != "":
+            cprice = yf.Ticker(symbol).info['currentPrice']
+    except:
+        cprice = 0
     # try:
     #     ticker = yf.Ticker(symbol)
     #     todays_data = ticker.history(period='1d')
@@ -47,6 +60,9 @@ def get_current_price(symbol):
     #     cprice  = yf.Ticker(symbol).info['currentPrice']
     return cprice
 
+def get_ticker(symbol):
+    ticker = yf.Ticker(symbol)
+    return ticker
 
 def get_52weekshigh_price(symbol):
     return yf.Ticker(symbol).info['fiftyTwoWeekHigh']
@@ -77,7 +93,7 @@ def get_market_cap(symbol):
     return market_cap_data
 
 
-xlfilename = "C:\\Users\\LENOVO\\Desktop\\MY PORTFOLIO.xlsx"
+xlfilename = "C:\\Users\\LENOVO\\OneDrive\\Desktop\\MY PORTFOLIO.xlsx"
 my_wb = openpyxl.load_workbook(xlfilename)
 my_sheet_obj = my_wb['CURRENT PORTFOLIO']
 my_row = len([row for row in my_sheet_obj if not all([cell.value == None for cell in row])])
@@ -87,17 +103,17 @@ for i in range(2,my_row+1):
     num_shares= int(my_sheet_obj.cell(row=i, column=7).value)
     symbol = str(symbol_cell.value) + "." + ("NS" if exchange_cell.value == "NSE" else "BO")
     if num_shares != 0:
-        soup = getSoup(str(symbol_cell.value).strip() + ".NS")
-        closing_balance = get_current_price(symbol if symbol_cell.value != "GOLDBEES" else "")
-        market_cap_data = get_market_cap(str(symbol_cell.value) + ".NS") if symbol_cell.value != "GOLDBEES" else 0
-        oneyearhigh_price = get_52weekshigh_price(symbol)
-        oneyearlow_price = get_52weekslow_price(symbol)
+        symbol_ticker = get_ticker(symbol)
+        closing_balance = symbol_ticker.info.get('currentPrice',0)
+        market_cap_data = symbol_ticker.info.get('marketCap', 0)
+        oneyearhigh_price = symbol_ticker.info.get('fiftyTwoWeekHigh',0)
+        oneyearlow_price = symbol_ticker.info.get('fiftyTwoWeekLow',0)
         #fromjan2020high_price = get_fromjan2020high_price(
         #    str(symbol_cell.value) + "." + ("NS" if exchange_cell.value == "NSE" else "BO"))
         #fromjan2020low_price = get_fromjan2020low_price(
         #    str(symbol_cell.value) + "." + ("NS" if exchange_cell.value == "NSE" else "BO"))
-        ex_dividend_date = get_ex_dividend_date_soup(soup)
-        ex_dividend_amt_yield = get_ex_dividend_amt(symbol)
+        ex_dividend_date = get_ex_dividend_date(symbol_ticker)
+        ex_dividend_amt_yield = get_ex_dividend_amt(symbol_ticker)
         print("{} : {}".format(str(symbol_cell.value), round(closing_balance, 2)))
         my_sheet_obj.cell(row=i, column=9).value = round(closing_balance, 2)
         my_sheet_obj.cell(row=i, column=17).value = round(oneyearhigh_price, 2)
