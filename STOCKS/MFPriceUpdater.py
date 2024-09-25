@@ -1,5 +1,5 @@
 import re
-
+import yfinance as yf
 import openpyxl
 import requests
 from bs4 import BeautifulSoup
@@ -9,7 +9,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
 XL_FILE_PATH = "C:\\Users\\LENOVO\\OneDrive\\Desktop\\MY PORTFOLIO.xlsx"
-
+def get_current_nifty():
+    return yf.Ticker('^NSEI').history_metadata.get('regularMarketPrice',0)
 
 def get_soup(url):
     headers = {
@@ -47,12 +48,12 @@ def process_investments(sheet, start_row, end_row, column_url, column_nav, colum
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
         driver.get(url)
         current_nav = float(''.join(filter(lambda x: x.isdigit() or x in '-./\\', driver.find_element(By.XPATH,"/html/body/div/div[2]/div[2]/div[1]/div[2]/div/div/div[1]/div/div[3]/div/div/div[1]/div/table/tr[1]/td[2]").text)))
-        # current_nav = get_current_nav(soup)
+        ## current_nav = get_current_nav(soup)
         expense_ratio = driver.find_element(By.XPATH,"/html/body/div/div[2]/div[2]/div[1]/div[2]/div/div/div[1]/div/div[10]/div/div[3]/h3").text.strip().replace("Expense ratio: ", "")
-        # expense_ratio = get_expense_ratio(soup)
+        current_nifty = get_current_nifty()
         sheet.cell(row=i, column=column_nav).value = current_nav
         sheet.cell(row=i, column=column_ratio).value = expense_ratio
-
+        sheet.cell(row=i, column= 13).value = current_nifty
 
 def process_crypto(sheet, start_row, end_row, column_url, column_price):
     for i in range(start_row, end_row):
@@ -83,7 +84,7 @@ def main():
     sheet = wb['ALL INVESTMENTS']
 
     process_investments(sheet, 19, 24, 7, 4, 2)
-    process_crypto(sheet, 36, 40, 8, 4)
+    #process_crypto(sheet, 36, 40, 8, 4)
 
     wb.save(XL_FILE_PATH)
     print("=========SAVED=========")
