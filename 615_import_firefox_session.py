@@ -8,8 +8,9 @@ from sqlite3 import OperationalError, connect
 try:
     from instaloader import ConnectionException, Instaloader
 except ModuleNotFoundError:
-    #print("Instaloader not found.\n  pip install [--user] instaloader")
+    # print("Instaloader not found.\n  pip install [--user] instaloader")
     os.system("pip install instaloader")
+
 
 def get_cookiefile():
     default_cookiefile = {
@@ -53,4 +54,3 @@ if __name__ == "__main__":
     except (ConnectionException, OperationalError) as e:
         print("Cookie import failed: {}".format(e))
         input("Press Enter to continue...")
-    
