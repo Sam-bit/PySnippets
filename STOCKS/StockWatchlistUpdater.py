@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 import yfinance as yf
 import openpyxl
@@ -21,15 +21,6 @@ def get_ex_dividend_date_soup(soup):
     except:
         exdivdate = "--"
     return exdivdate
-def get_ex_dividend_date(symbol):
-    try:
-        exdivdate = yf.Ticker(symbol).info['lastDividendDate']
-        exdivdate=datetime.utcfromtimestamp(exdivdate).strftime("%d-%b-%Y")
-    except:
-        exdivdate = "--"
-    return exdivdate
-
-
 def get_ex_dividend_amt_yield_soup(soup):
     try:
         exdivamt = soup.find('td', {"data-test": "DIVIDEND_AND_YIELD-value"}).text.strip()
@@ -37,9 +28,17 @@ def get_ex_dividend_amt_yield_soup(soup):
         exdivamt = "N/A (N/A)"
     return exdivamt
 
-def get_ex_dividend_amt(symbol):
+def get_ex_dividend_date(symbol_ticker):
     try:
-        exdivamt = yf.Ticker(symbol).info['lastDividendValue']
+        exdivdate = symbol_ticker.info['lastDividendDate']
+        exdivdate=datetime.datetime.utcfromtimestamp(exdivdate).strftime("%d-%b-%Y")
+    except:
+        exdivdate = "--"
+    return exdivdate
+
+def get_ex_dividend_amt(symbol_ticker):
+    try:
+        exdivamt = symbol_ticker.info['lastDividendValue']
     except:
         exdivamt = 0
     return exdivamt
